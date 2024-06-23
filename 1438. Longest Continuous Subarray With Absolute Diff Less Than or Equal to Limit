@@ -1,0 +1,30 @@
+Approach : Sliding Window + Priority Queue
+Time complexity : O(nlogn)
+space complexity : O(n)
+
+class Solution {
+    public int longestSubarray(int[] nums, int limit) {
+        PriorityQueue<Integer> maxpq = new PriorityQueue<>((a,b) -> b-a);
+        PriorityQueue<Integer> minpq = new PriorityQueue<>((a,b) -> a-b);
+
+        int i = 0;
+        int j = 0;
+        int maxLength = 0;
+        while(i < nums.length){
+            maxpq.offer(nums[i]);
+            minpq.offer(nums[i]);
+
+            if(Math.abs(maxpq.peek() - minpq.peek()) <= limit){
+                maxLength = Math.max(maxLength, i-j+1);
+                i++;
+            }else{
+                maxpq.remove(nums[j]);
+                minpq.remove(nums[j]);
+                i++;
+                j++;
+            }
+
+        }
+        return maxLength;
+    }
+}
